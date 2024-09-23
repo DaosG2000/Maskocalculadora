@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Cuál es la porción adecuada para tu masko amigo?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Baloo Thambi 2', cursive;
+      background-color: #098B7F;
+      color: #098B7F;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      position: relative;
+    }
+
+    .container {
+      background-color: #F8AF3C;
+      padding: 30px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+      z-index: 1;
+    }
+
+    /* Ajuste para las imágenes laterales */
+    .side-image {
+      position: absolute;
+      top: 0;
+      bottom: -100px;
+      width: 400px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .side-image.left {
+      left: 0;
+      background-image: url('motivo.png');
+    }
+
+    .side-image.right {
+      right: 0;
+      background-image: url('motivo.png');
+    }
+
+    h1 {
+      color: #06564C;
+      font-size: 40px;
+      line-height: 1;
+      font-weight: bold;
+    }
+
+    label {
+      font-size: 18px;
+      color: #06564C;
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    select, input {
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 2px solid #264653;
+      width: 80%;
+      text-align: center;
+    }
+
+    button {
+      background-color: #264653;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      margin-top: 20px;
+      width: 80%;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: white;
+      color: #264653;
+      border: 2px solid #264653;
+    }
+
+    h2 {
+      color: #264653;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    /* Ajuste del logo */
+    img.logo {
+      width: 300px; /* Aumenté el tamaño para que sea más visible */
+      margin-bottom: -18px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Imágenes en los extremos -->
+  <div class="side-image left"></div>
+  <div class="side-image right"></div>
+
+  <div class="container">
+    <!-- Logo -->
+    <img src="LOGOOFICIAL.png" alt="Descripción de la imagen" class="logo">
+
+    <!-- Título -->
+    <h1>¿Cuál es la porción adecuada <br> para tu masko amigo?</h1>
+
+    <!-- Producto -->
+    <label for="producto">Producto:</label>
+    <select id="producto">
+      <option value="500">Barf pollo y verduras x 500g</option>
+      <option value="400">Barf pollo y frutas x 400g</option>
+      <option value="400">Barf res y verduras x 400g</option>
+      <option value="400">Barf de pescado x 400g</option>
+      <option value="400">Barf cordero y verduras x 400g</option>
+      <option value="200">Barf de ternera para gatos x 200g</option>
+      <option value="200">Barf de pollo para gatos x 200g</option>
+    </select><br>
+
+    <!-- Edad -->
+    <label for="edad">Edad:</label>
+    <select id="edad">
+      <option value="10">De 2 a 4 meses</option>
+      <option value="8">De 4 a 6 meses</option>
+      <option value="6">De 6 a 8 meses</option>
+      <option value="4">De 8 a 10 meses</option>
+      <option value="3.5">De 10 a 12 meses</option>
+      <option value="3">Adulto</option>
+    </select><br>
+
+    <!-- Peso -->
+    <label for="peso">Peso (kg):</label>
+    <input type="number" id="peso" min="0" max="70" placeholder="Ingresa el peso del perro"><br>
+
+    <!-- Días de alimentación -->
+    <label for="dias">Días de alimentación:</label>
+    <select id="dias">
+      <option value="8">8 días</option>
+      <option value="15">15 días</option>
+      <option value="30">1 mes</option>
+    </select><br>
+
+    <button onclick="calcularAlimento()">Calcular</button>
+
+    <h2 id="porcionDiaria"></h2>
+    <h2 id="cantidadAlimento"></h2>
+    <h2 id="paquetes"></h2>
+  </div>
+
+  <script>
+    function calcularAlimento() {
+      const peso = parseFloat(document.getElementById('peso').value);
+      const porcentaje = parseFloat(document.getElementById('edad').value) / 100;
+      const dias = parseInt(document.getElementById('dias').value);
+      const productoSeleccionado = parseInt(document.getElementById('producto').value);
+
+      if (peso > 0 && dias > 0) {
+        const porcionDiaria = peso * porcentaje;
+        document.getElementById('porcionDiaria').textContent = 
+          "Porción diaria: " + (porcionDiaria * 1000).toFixed(0) + " gramos.";
+
+        const cantidadAlimento = porcionDiaria * dias * 1000; // Convertimos a gramos
+        document.getElementById('cantidadAlimento').textContent = 
+          "Cantidad de alimento B.A.R.F: " + cantidadAlimento.toFixed(0) + " gramos.";
+
+        const gramosPorPaquete = productoSeleccionado; 
+        const cantidadPaquetes = Math.ceil(cantidadAlimento / gramosPorPaquete);
+        document.getElementById('paquetes').innerHTML = 
+          `Producto requerido: ${cantidadPaquetes} paquetes de producto.`;
+      } else {
+        document.getElementById('porcionDiaria').textContent = "Ingresa valores válidos.";
+      }
+    }
+  </script>
+</body>
+</html>
+
+
+   
